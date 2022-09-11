@@ -1,0 +1,15 @@
+@import 'variable';
+
+html{
+    font-size:100%;
+}
+
+.app{
+    h2{
+        color: $red-color;
+        font-size: 50px;
+    }
+    .container{
+        color: $blue-color;
+    }
+}
