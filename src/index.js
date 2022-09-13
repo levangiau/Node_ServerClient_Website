@@ -10,11 +10,13 @@ const route = require('./routes');
 // setup static file and scss
 app.use(express.static(path.join(__dirname, 'public')));
 // setup để lấy được thông tin trong body trong form method='post' của html
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(
+    express.urlencoded({
+        extended: true,
+    }),
+);
 // setup để lấy thông tin bằng phương thức:XMLHttpRequest,fetch,axios,...
-app.use(express.json())
+app.use(express.json());
 // Http logger
 // app.use(morgan('combined'));
 // Template engine defaul khi tạo
@@ -23,9 +25,12 @@ app.use(express.json())
 // app.set('view engine', 'handlebars');
 
 // =>>> Mở rộng đuôi file cho handle bars <<<=
-app.engine('hbs', handlebars.engine({
-    extname: '.hbs'
-}));
+app.engine(
+    'hbs',
+    handlebars.engine({
+        extname: '.hbs',
+    }),
+);
 app.set('view engine', 'hbs');
 // =>>>End mở rộng đuôi file cho handle bars <<<=
 app.set('views', path.join(__dirname, 'resource/views'));
@@ -34,5 +39,5 @@ app.set('views', path.join(__dirname, 'resource/views'));
 route(app);
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+    console.log(`Example app listening on port ${port}`);
+});

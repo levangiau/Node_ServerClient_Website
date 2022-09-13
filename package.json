@@ -4,6 +4,8 @@
   "description": "Demo website",
   "main": "src/index.js",
   "scripts": {
+    "beautiful": "prettier --single-quote --trailing-comma all --tab-width 4 --write src/**/*.{js,json,scss}",
+    "beautifuls": "lint-staged",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --inspect src/index.js",
     "watch": "node-sass --watch src/resource/scss --output src/public/css"
@@ -23,13 +25,22 @@
     "url": "https://github.com/levangiau/Node_ServerClient_Website/issues"
   },
   "homepage": "https://github.com/levangiau/Node_ServerClient_Website#readme",
+  "lint-staged": {
+    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
+  },
+  "prepare":{
+    "pre-commit":"beautifuls"
+  },
   "dependencies": {
     "express": "^4.18.1",
     "express-handlebars": "^6.0.6"
   },
   "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "morgan": "^1.10.0",
     "node-sass": "^7.0.1",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1"
   }
 }
