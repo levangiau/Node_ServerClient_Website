@@ -1,0 +1,3 @@
+Thư viện handlebars mà version > 4.16 sẽ không trực tiếp gọi từ đối tượng ra thông thường được do lỗi bảo mật
+Thư viện mongoose sẽ cung cấp cho chúng ta thêm thuộc tính "toObject" => dùng để chuyển Object dạng của db phức tạp
+sang Object dạng cơ bản

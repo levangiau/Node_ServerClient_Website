@@ -2,8 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const handlebars = require('express-handlebars');
 const path = require('path');
+const db = require('./config/db')
 const app = express();
-const port = 3000;
+const port = 3500;
 
 const route = require('./routes');
 
@@ -33,11 +34,13 @@ app.engine(
 );
 app.set('view engine', 'hbs');
 // =>>>End mở rộng đuôi file cho handle bars <<<=
-app.set('views', path.join(__dirname, 'resource/views'));
+app.set('views', path.join(__dirname, 'resource', 'views'));
 
 // Routes init
 route(app);
 
+db.connect();
+
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`App listening on port ${port}`);
 });
