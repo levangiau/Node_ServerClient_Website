@@ -1,3 +1,6 @@
 Thư viện handlebars mà version > 4.16 sẽ không trực tiếp gọi từ đối tượng ra thông thường được do lỗi bảo mật
 Thư viện mongoose sẽ cung cấp cho chúng ta thêm thuộc tính "toObject" => dùng để chuyển Object dạng của db phức tạp
 sang Object dạng cơ bản
+Thư viện mongoose version > 4.0 thì đã tích hợp sẵng cho ngày tạo và ngày cập nhật.
+Trong db mà có 2 param trùng nhau thì mặc định sẽ lấy param đầu tiên.
+=> Trường hợp này cần phải bắt buộc xác định 1 params nếu trùng thì tự tạo params khác
