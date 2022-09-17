@@ -3,7 +3,7 @@ const { mongooseToObject } = require('../../until/mongoose');
 
 class CourseController {
 
-    // [GET] /course/:slug
+    // [GET] /courses/:slug
     show(req, res, next) {
         Course.findOne({ slug: req.params.slug })
             .then((course) => {
@@ -16,7 +16,7 @@ class CourseController {
     create(req, res, next) {
         res.render('courses/create')
     }
-    // [POST] /course/store
+    // [POST] /courses/store
     store(req, res, next) {
         // res.json(req.body)
         const formData = req.body;
@@ -38,6 +38,23 @@ class CourseController {
             .catch(error => {
                 res.send("Lỗi khi tạo mới dữ liệu!")
             });
+    }
+    // [GET] /courses/:id/edit
+    edit(req, res, next) {
+        Course.findById(req.params.id)
+            .then(course => {
+                res.render('courses/edit', { course: mongooseToObject(course) })
+            })
+            .catch(next);
+
+    }
+    //[PUT] /courses/:id
+    update(req, res, next) {
+        Course.updateOne({ _id: req.params.id }, req.body)
+            .then(() => {
+                res.redirect('/me/stored/courses')
+            })
+            .catch(next)
     }
 }
 module.exports = new CourseController();

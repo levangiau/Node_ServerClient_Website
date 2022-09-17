@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const handlebars = require('express-handlebars');
+const methodOverride = require('method-override')
 const path = require('path');
 const db = require('./config/db')
 const app = express();
@@ -30,12 +31,17 @@ app.engine(
     'hbs',
     handlebars.engine({
         extname: '.hbs',
+        helpers: {
+            sum: (a, b) => a + b,
+        }
     }),
 );
 app.set('view engine', 'hbs');
 // =>>>End mở rộng đuôi file cho handle bars <<<=
 app.set('views', path.join(__dirname, 'resource', 'views'));
-
+// orverride lại phương thức khi submit trên form do http chỉ nhận 2 pp là get và post 
+// khi dùng khác 2 pp nên override lại
+app.use(methodOverride('_method'));
 // Routes init
 route(app);
 
