@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
+const mongooseDelete = require('mongoose-delete');
 
-mongoose.plugin(slug);
 const Schema = mongoose.Schema;
 
 // mặc định mongoose < 4.0 phải tạo ra ngày tháng.
@@ -24,5 +24,8 @@ const Cource = new Schema({
     level: { type: String, default: '' },
     image: { type: String, default: '' },
 }, { timestamps: true });
+
+mongoose.plugin(slug);
+Cource.plugin(mongooseDelete, { overrideMethods: 'all', deletedAt: true });
 
 module.exports = mongoose.model('Cource', Cource);

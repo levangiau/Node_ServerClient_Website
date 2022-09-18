@@ -33,7 +33,7 @@ class CourseController {
         //c2: dùng promise 
         course.save()
             .then(() => {
-                res.redirect("/")
+                res.redirect("/me/stored/courses")
             })
             .catch(error => {
                 res.send("Lỗi khi tạo mới dữ liệu!")
@@ -58,6 +58,22 @@ class CourseController {
     }
     //[DELETE] /courses/:id
     delete(req, res, next) {
+        Course.delete({ _id: req.params.id })
+            .then(() => {
+                res.redirect("back")
+            })
+            .catch(next);
+    }
+    //[PATCH] /courses/:id/restore
+    restore(req, res, next) {
+        Course.restore({ _id: req.params.id })
+            .then(() => {
+                res.redirect("back")
+            })
+            .catch(next)
+    }
+    //[DELETE] /courses/:id/force
+    destroy(req, res, next) {
         Course.deleteOne({ _id: req.params.id })
             .then(() => {
                 res.redirect("back")
