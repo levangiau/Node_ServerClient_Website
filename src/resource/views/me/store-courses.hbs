@@ -1,10 +1,24 @@
-<div class="mt-4">
+<form class="mt-4" method="POST" action="/courses/handle-form-action" name="container-form">
     <h3>KHÓA HỌC CỦA TÔI</h3>
     <a href="/me/trash/courses">Thùng rác ({{deletedCount}})</a>
+    <div class="mt-4 d-flex align-items-center">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="checkbox-all" value="">
+            <label class="form-check-label" for="checkbox-all">Chọn tất cả</label>
+        </div>
+        <select class="custom-select my-1 mr-sm-2 selection-all" name="action" id="inlineFormCustomSelectPref" required>
+            <option value="">--Chọn hành động--</option>
+            <option value="delete">Xóa</option>
+
+        </select>
+        <button class="btn btn-primary btn-sm disabled check-all-submit">
+            Thực hiện
+        </button>
+    </div>
     <table class="table mt-4">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col" colspan="2">#</th>
                 <th scope="col">Tên</th>
                 <th scope="col">Trình độ</th>
                 <th scope="col" colspan="2">Thời gian tạo</th>
@@ -13,6 +27,11 @@
         <tbody>
             {{#each courses}}
                 <tr>
+                    <td>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="courseIds[]" value="{{this._id}}">
+                        </div>
+                    </td>
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
                     <td>{{this.level}}</td>
@@ -32,7 +51,7 @@
             {{/each}}
         </tbody>
     </table>                                
-</div>
+</form>
 
 <!-- Confirm Delete -->
 <div class="modal fade" id="delete-course-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -64,6 +83,13 @@
     */
     document.addEventListener("DOMContentLoaded",function(){
         var courseId;
+
+        /// lắng nghe sự kiện checkbox-all
+        var checkboxAll = $('#checkbox-all');
+        var courseItemsCheckbox=$('input[name="courseIds[]"]');
+        var checkAllSubmitBtn = $('.check-all-submit');
+        var containerForm = document.forms["container-form"];
+        ///
         /**
         document.forms là thuộc tính js có thể nhận biết và tự gọi được form
         */
@@ -78,6 +104,52 @@
             deleteForm.action = '/courses/' + courseId + '?_method=DELETE';
             deleteForm.submit();
         }
+        //when checkboxAll click
+        checkboxAll.change(function(){
+            var checkeAll = $(this).prop('checked');
+            if(checkeAll){
+                courseItemsCheckbox.prop('checked',true);
+            }else{
+                courseItemsCheckbox.prop('checked',false);
+            }
+            renderCheckAllSubmittedBtn();
+        });
+        // when courseItemsCheckbox is checked
+        courseItemsCheckbox.change(function(){
+            var checkedAll = courseItemsCheckbox.length === $('input[name="courseIds[]"]:checked').length;
+            if (checkedAll) {
+                checkboxAll.prop('checked', true);
+            }else{
+                checkboxAll.prop('checked', false);
+            }
+            renderCheckAllSubmittedBtn();
+        });
+        // function renderCheckAllSubmittedBtn
+        function renderCheckAllSubmittedBtn() {
+            var checkCount = $('input[name="courseIds[]"]:checked').length;
+            if(checkCount > 0){
+                checkAllSubmitBtn.removeClass('disabled');
+            }else{
+                checkAllSubmitBtn.addClass('disabled');
+            }
+        }
+        //
+        {{!-- checkAllSubmitBtn.click(function(event){
+            event.preventDefault();
+            var submitable = !$(this).hasClass('disabled');
+            if(submitable){
+                //containerForm.action = '';
+                containerForm.submit();
+            }
+           
+        }); --}}
+
+        checkAllSubmitBtn.on('submit',function(event){
+             var submitable = !$(this).hasClass('disabled');
+            if(!submitable){
+               event.preventDefault();
+            }
+        });
     })
     
 </script>
