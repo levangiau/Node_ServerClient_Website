@@ -1,6 +1,7 @@
 <form class="mt-4" method="POST" action="/courses/handle-form-action" name="container-form">
     <h3>KHÓA HỌC CỦA TÔI</h3>
     <a href="/me/trash/courses">Thùng rác ({{deletedCount}})</a>
+    {{_sort.type}}
     <div class="mt-4 d-flex align-items-center">
         <div class="form-check">
             <input type="checkbox" class="form-check-input" id="checkbox-all" value="">
@@ -11,7 +12,7 @@
             <option value="delete">Xóa</option>
 
         </select>
-        <button class="btn btn-primary btn-sm disabled check-all-submit">
+        <button class="btn btn-primary btn-sm check-all-submit" disabled>
             Thực hiện
         </button>
     </div>
@@ -19,9 +20,15 @@
         <thead>
             <tr>
                 <th scope="col" colspan="2">#</th>
-                <th scope="col">Tên</th>
-                <th scope="col">Trình độ</th>
-                <th scope="col" colspan="2">Thời gian tạo</th>
+                <th scope="col">Tên
+                    {{{sortable 'name' _sort}}}
+                </th>
+                <th scope="col">Trình độ
+                     {{{sortable 'level' _sort}}}
+                </th>
+                <th scope="col" colspan="2">Thời gian tạo 
+                     {{{sortable 'createdAt' _sort}}}
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -88,7 +95,9 @@
         var checkboxAll = $('#checkbox-all');
         var courseItemsCheckbox=$('input[name="courseIds[]"]');
         var checkAllSubmitBtn = $('.check-all-submit');
-        var containerForm = document.forms["container-form"];
+        //var containerForm = document.forms["container-form"];// kiểu lấy của JavaScript
+        var containerForm = $('form[name="container-form"]'); // kiểu lấy của JQuery
+
         ///
         /**
         document.forms là thuộc tính js có thể nhận biết và tự gọi được form
@@ -128,13 +137,14 @@
         function renderCheckAllSubmittedBtn() {
             var checkCount = $('input[name="courseIds[]"]:checked').length;
             if(checkCount > 0){
-                checkAllSubmitBtn.removeClass('disabled');
+                checkAllSubmitBtn.removeAttr('disabled');
             }else{
-                checkAllSubmitBtn.addClass('disabled');
+                checkAllSubmitBtn.attr('disabled',true);
             }
         }
         //
-        {{!-- checkAllSubmitBtn.click(function(event){
+       {/* 
+       checkAllSubmitBtn.click(function(event){
             event.preventDefault();
             var submitable = !$(this).hasClass('disabled');
             if(submitable){
@@ -142,14 +152,14 @@
                 containerForm.submit();
             }
            
-        }); --}}
-
-        checkAllSubmitBtn.on('submit',function(event){
-             var submitable = !$(this).hasClass('disabled');
+        });
+        containerForm.on('submit',function(event){
+             var submitable = !checkAllSubmitBtn.hasClass('disabled');
             if(!submitable){
                event.preventDefault();
             }
         });
+        */}
     })
     
 </script>

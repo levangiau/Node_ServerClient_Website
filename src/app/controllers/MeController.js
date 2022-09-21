@@ -21,8 +21,15 @@ class MeController {
         //         res.render('me/store-courses', { courses: course })
         //     })
         //     .catch(next);
+        let courseQuery = Course.find({});
 
-        Promise.all([Course.find({}), Course.countDocumentsDeleted()])
+        if (req.query.hasOwnProperty('_sort')) {
+            courseQuery = courseQuery.sort({
+                [req.query.column]: req.query.type
+            });
+        }
+
+        Promise.all([courseQuery, Course.countDocumentsDeleted()])
             /**
              * các promise trong all này sẽ thực hiện đồng thời 2 promise cùng lúc và sẽ trả về kết quả đồng thời
              * như ở dưới đây
